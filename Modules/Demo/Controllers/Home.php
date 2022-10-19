@@ -13,6 +13,6 @@
         
         public function index()
         {
-            return $this->blade('Module Demo');
+            return $this->blade('home');
         }
     }
