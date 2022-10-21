@@ -52,14 +52,17 @@ abstract class BaseController extends Controller
     }
     
     public function blade($view, $data = []){
-        $uri = service('uri');
-        $module = ucfirst($uri->getSegment(1));
-        if($module!=''){
-            $path = APPPATH . 'Modules/' . $module . '/Views';
-        }else{
-            $path = APPPATH.'Views';
+        foreach(glob(APPPATH . 'Modules/*', GLOB_ONLYDIR) as $item_dir)
+        {
+            if (file_exists($item_dir . '/Views'))
+            {
+                $path[] = $item_dir . '/Views';
+            }
         }
-        $cache = $path . '/cache';
+        $path[] = APPPATH.'Views';
+        
+        $cache = FCPATH . 'public/cache';
+        
         $blade = new Blade($path, $cache);
         return $blade->render($view, $data);
     }
