@@ -54,12 +54,8 @@ if (is_file(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php')) {
     require APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php';
 }
 
-$uri = service('uri');
-$module = ucfirst($uri->getSegment(1));
-
-if(file_exists(APPPATH.'/Modules/' . $module . '/Routes.php')){
-    $file =  scandir(APPPATH.'/Modules/'.$module);
-    if (in_array('Routes.php', $file)) {
-        include APPPATH.'/Modules/' . $module . '/Routes.php';
+foreach(glob(APPPATH . 'Modules/*', GLOB_ONLYDIR) as $item_dir){
+    if (file_exists($item_dir . '/Routes.php')){
+        require_once($item_dir . '/Routes.php');
     }
 }
